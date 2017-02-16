@@ -1,0 +1,9 @@
+extends base.pug
+
+block content
+    h1 See all the instructors!
+    a(href="/instructors/new") make a new one!
+    ul
+        each instructor in instructors
+            li #{instructor.name} &nbsp;
+                a(href=`/instructors/${instructor.id}/edit`) Edit

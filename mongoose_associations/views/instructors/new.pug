@@ -1,0 +1,6 @@
+extends base.pug
+
+block content
+    form(action="/instructors" method="POST")
+        input(type="text", name="name")
+        input(type="submit", value="Submit!")
