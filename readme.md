@@ -11,3 +11,5 @@
 - [09 - Mongoose Associations](./mongoose_associations)
 - [10 - Heroku Intro](./heroku_intro)
 - [11 - Heroku with MongoDB](./heroku_with_mongodb)
+
+To run any of these examples, fork and clone the repository and `cd` into any folder and run `npm install` and either `node app.js` or `nodemon`. 
