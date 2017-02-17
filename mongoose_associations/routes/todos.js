@@ -36,7 +36,7 @@ router.post("/", function(req,res){
         newTodo.save().then(function(createdTodo){
             instructor.todos.push(createdTodo._id)
             instructor.save().then(function(){
-                res.redirect(`instructors/${instructor.id}/todos`)
+                res.redirect(`/instructors/${instructor.id}/todos`)
             })
         })
     })
