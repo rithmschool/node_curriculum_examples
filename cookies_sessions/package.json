@@ -1,0 +1,24 @@
+{
+  "name": "password_hashing_bcrypt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.16.1",
+    "cookie-session": "^2.0.0-beta.1",
+    "dotenv": "^4.0.0",
+    "express": "^4.14.1",
+    "locus": "^2.0.1",
+    "method-override": "^2.3.7",
+    "mongoose": "^4.8.4",
+    "morgan": "^1.8.1",
+    "pug": "^2.0.0-beta11"
+  }
+}
