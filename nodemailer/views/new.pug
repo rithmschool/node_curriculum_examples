@@ -1,0 +1,7 @@
+extends base.pug
+
+block content
+    form(action="/" method="POST")
+        input(type="text" name="to")
+        input(type="text" name="subject")
+        input(type="submit" value="Send email!")

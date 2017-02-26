@@ -27,6 +27,5 @@
 - [09 - Socket.io](./socket_io)
 - [10 - Nodemailer](./nodemailer)
 - [11 - Web Scraping](./web_scraping)
-- [12 - Background Jobs](./background_jobs)
 
 To run any of these examples, fork and clone the repository and `cd` into any folder and run `npm install` and either `node app.js` or `nodemon`. 
