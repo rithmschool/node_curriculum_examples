@@ -2,9 +2,10 @@
   "name": "socket_io",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "express": "^4.14.1",
+    "locus": "^2.0.1",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {},
