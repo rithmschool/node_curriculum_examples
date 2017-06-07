@@ -83,15 +83,6 @@ describe('GET /users/:id', function() {
 describe('PATCH /users/:id', function() {
     it('responds with JSON', function(done) {
         request(app)
-            .get(`/api/users/${auth.current_user.id}`)
-            .set('Authorization', 'bearer: ' + auth.token)
-            .expect(200, done);
-    });
-});
-
-describe('PATCH /users/:id', function() {
-    it('responds with JSON', function(done) {
-        request(app)
             .patch(`/api/users/${auth.current_user.id}`)
             .send({
                 username:'bob'
