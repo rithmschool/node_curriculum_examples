@@ -1,14 +1,14 @@
-var express = require("express");
-var app = express();
+const express = require('express');
+const app = express();
 
-var instructors = ["Elie", "Tim", "Matt"]
+const instructors = ['Elie', 'Tim', 'Matt'];
 
-app.set("view engine", "pug");
+app.set('view engine', 'pug');
 
-app.get("/", function(req,res){
-  res.render("index", {instructors});
+app.get('/', function(req, res) {
+  return res.render('index', { instructors });
 });
 
-app.listen(3000, function(){
-  console.log("Server is listening on port 3000");
+app.listen(3000, function() {
+  console.log('Server is listening on port 3000');
 });
