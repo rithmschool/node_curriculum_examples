@@ -11,7 +11,7 @@ router
     return res.render('index', { instructors });
   })
   .post((req, res) => {
-    instructors.push(Object.assign({}, req.body, { id }));
+    instructors.push({ id, ...req.body });  // ... is object spread operator
     id++;
     return res.redirect('/instructors');
   });
