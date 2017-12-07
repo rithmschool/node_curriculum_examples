@@ -1,9 +1,15 @@
-var mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-var instructorSchema = new mongoose.Schema({
-    name: String
-})
+const instructorSchema = new mongoose.Schema(
+  {
+    first: String,
+    last: String,
+    programmingLanguages: [String],
+    favoriteSubjects: [String]
+  },
+  { timestamps: true } // automatically add createdAt and updatedAt
+);
 
-var Instructor = mongoose.model('Instructor', instructorSchema)
+const Instructor = mongoose.model('Instructor', instructorSchema);
 
-module.exports = Instructor
+module.exports = Instructor;
