@@ -1,7 +1,6 @@
 // npm packages
 const bodyParser = require('body-parser');
 const express = require('express');
-const fs = require('fs');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 
@@ -11,8 +10,8 @@ const instructorRoutes = require('./routes/instructors');
 
 /*
 ---Database Config---
-This section can be placed into models/index.js or into a different folder, e.g. "settings",
-just make sure you require it in the app.js file so that it connects when your server starts.
+This section can be placed into models/index.js or into a different folder, 
+e.g. "models" or "settings", just make sure it connects when your server starts.
 */
 const mongoose = require('mongoose');
 mongoose.set('debug', true);
@@ -24,7 +23,6 @@ mongoose.connect('mongodb://localhost/mongoose_intro', {
 app.set('view engine', 'pug');
 
 // middleware
-app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(morgan('tiny'));
@@ -36,6 +34,6 @@ app.get('/', (req, res) => {
 });
 
 // server init
-app.listen(5000, function() {
+app.listen(5000, () => {
   console.log('Server is listening on port 3000');
 });

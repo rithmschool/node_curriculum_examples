@@ -1,0 +1,1 @@
+exports.instructorRoutes = require('./instructors');
