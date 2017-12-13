@@ -1,57 +1,68 @@
-var express = require("express");
-var router = express.Router({mergeParams:true})
-var db = require("../models")
+const express = require('express');
 
-router.get("/", function(req,res){
-    db.Instructor.findById(req.params.instructor_id).populate('todos').exec().then(function(instructor){
-        console.log("TODOS", instructor.todos)
-        res.render('todos/index', {instructor})
-    }, function(err){
-        res.send("ERROR!")
-    })
+const { Instructor, Todo } = require('../models');
+
+const router = express.Router({ mergeParams: true });
+
+router
+  .route('')
+  .get((req, res) => {
+    return Instructor.findById(req.params.instructor_id)
+      .populate('todos')
+      .exec()
+      .then(instructor => {
+        // console.log('TODOS', instructor.todos);
+        return res.render('todos/index', { instructor });
+      })
+      .catch(err => {
+        return res.send('ERROR!');
+      });
+  })
+  .post((req, res) => {
+    const newTodo = new Todo(req.body);
+    newTodo.instructor = req.params.instructor_id;
+    return Instructor.findById(req.params.instructor_id).then(instructor => {
+      return newTodo.save().then(createdTodo => {
+        instructor.todos.push(createdTodo._id);
+        instructor.save().then(() => {
+          return res.redirect(`/instructors/${instructor.id}/todos`);
+        });
+      });
+    });
+  });
+
+router.route('/new').get((req, res) => {
+  return Instructor.findById(req.params.instructor_id).then(instructor => {
+    return res.render('todos/new', { instructor });
+  });
 });
 
-router.get("/new", function(req,res){
-    db.Instructor.findById(req.params.instructor_id).then(function(instructor){
-        res.render("todos/new", {instructor});
-    })
-});
+router
+  .route('/:id')
+  .get((req, res) => {
+    return Todo.findById(req.params.id)
+      .populate('instructor')
+      .then(todo => {
+        return res.render('todos/show', { todo });
+      });
+  })
+  .patch((req, res) => {
+    return Todo.findByIdAndUpdate(req.params.id, req.body).then(() => {
+      return res.redirect(`/instructors/${req.params.instructor_id}/todos`);
+    });
+  })
+  .delete((req, res) => {
+    return Todo.findByIdAndRemove(req.params.id).then(() => {
+      return res.redirect(`/instructors/${req.params.instructor_id}/todos`);
+    });
+  });
 
-router.get("/:id", function(req,res){
-    db.Todo.findById(req.params.id).populate('instructor').then(function(todo){
-        res.render('todos/show', {todo})
-    })
-});
-
-router.get("/:id/edit", function(req,res){
-    db.Todo.findById(req.params.id).populate('instructor').then(function(todo){
-        res.render('todos/edit', {todo})
-    })
-});
-
-router.post("/", function(req,res){
-    var newTodo = new db.Todo(req.body)
-    newTodo.instructor = req.params.instructor_id
-    db.Instructor.findById(req.params.instructor_id).then(function(instructor){
-        newTodo.save().then(function(createdTodo){
-            instructor.todos.push(createdTodo._id)
-            instructor.save().then(function(){
-                res.redirect(`/instructors/${instructor.id}/todos`)
-            })
-        })
-    })
-});
-
-router.patch("/:id", function(req,res){
-    db.Todo.findByIdAndUpdate(req.params.id, req.body).then(function(data){
-        res.redirect(`/instructors/${req.params.instructor_id}/todos`)
-    })
-});
-
-router.delete("/:id", function(req,res){
-    db.Todo.findByIdAndRemove(req.params.id).then(function(data){
-        res.redirect(`/instructors/${req.params.instructor_id}/todos`)
-    })
+router.get('/:id/edit', (req, res) => {
+  return Todo.findById(req.params.id)
+    .populate('instructor')
+    .then(todo => {
+      return res.render('todos/edit', { todo });
+    });
 });
 
 module.exports = router;

@@ -1,51 +1,60 @@
-var express = require("express");
-var router = express.Router()
-var db = require("../models")
+const express = require('express');
 
-router.get("/", function(req,res){
-    // db.Instructor.find({}, function(err,instructors){
-    //     res.render('instructors/index', {instructors})
-    // })
+const { Instructor } = require('../models');
 
-    db.Instructor.find().then(function(instructors){
-        res.render('instructors/index', {instructors})
-    }, function(err){
-        res.send("ERROR!")
+const router = express.Router();
+
+router
+  .route('')
+  .get((req, res) => {
+    return Instructor.find()
+      .then(instructors => {
+        return res.render('instructors/index', { instructors });
+      })
+      .catch(err => next(err));
+  })
+  .post((req, res) => {
+    return Instructor.create(req.body)
+      .then(() => {
+        return res.redirect('/');
+      })
+      .catch(err => next(err));
+  });
+
+router.route().get('/new', (req, res) => {
+  return res.render('instructors/new');
+});
+
+router
+  .route('/:id')
+  .get((req, res) => {
+    return Instructor.findById(req.params.id).then(instructor => {
+      return res
+        .render('instructors/show', { instructor })
+        .catch(err => next(err));
+    });
+  })
+  .patch((req, res) => {
+    return Instructor.findByIdAndUpdate(req.params.id, req.body)
+      .then(() => {
+        return res.redirect('/instructors');
+      })
+      .catch(err => next(err));
+  })
+  .delete((req, res) => {
+    return Instructor.findByIdAndRemove(req.params.id)
+      .then(() => {
+        return res.redirect('/instructors');
+      })
+      .catch(err => next(err));
+  });
+
+router.route('/:id/edit').get((req, res) => {
+  return Instructor.findById(req.params.id)
+    .then(instructor => {
+      return res.render('instructors/edit', { instructor });
     })
+    .catch(err => next(err));
 });
 
-router.get("/new", function(req,res){
-    res.render("instructors/new");
-});
-
-router.get("/:id", function(req,res){
-    db.Instructor.findById(req.params.id).then(function(instructor){
-        res.render('instructors/show', {instructor})
-    })
-});
-
-router.get("/:id/edit", function(req,res){
-    db.Instructor.findById(req.params.id).then(function(instructor){
-        res.render('instructors/edit', {instructor})
-    })
-});
-
-router.post("/", function(req,res){
-    db.Instructor.create(req.body).then(function(){
-        res.redirect('/')
-    })
-});
-
-router.patch("/:id", function(req,res){
-    db.Instructor.findByIdAndUpdate(req.params.id, req.body).then(function(data){
-        res.redirect('/instructors')
-    })
-});
-
-router.delete("/:id", function(req,res){
-    db.Instructor.findByIdAndRemove(req.params.id).then(function(data){
-        res.redirect('/instructors')
-    })
-});
-
-module.exports = router
+module.exports = router;
