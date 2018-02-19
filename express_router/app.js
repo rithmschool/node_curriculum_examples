@@ -11,7 +11,7 @@ app.use(methodOverride('_method'));
 app.use(morgan('tiny'));
 
 // requiring routes middleware
-const instructorRoutes = require('./routes');
+const instructorRoutes = require('./router');
 app.use('/instructors', instructorRoutes);
 
 app.get('/', (req, res) => {
