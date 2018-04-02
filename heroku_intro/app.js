@@ -6,7 +6,7 @@ app.get('/', (request, response) => {
 });
 
 app.get('/user/:name', (request, response) => {
-  return response.send(`Hello ${req.params.name}`);
+  return response.send(`Hello ${request.params.name}`);
 });
 
 const PORT = process.env.PORT || 3000;

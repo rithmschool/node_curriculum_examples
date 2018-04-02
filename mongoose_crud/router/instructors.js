@@ -9,19 +9,17 @@ const router = express.Router();
 
 router
   .route('')
-  .get((req, res) => {
-    return Instructor.find()
-      .then(instructors => {
-        return res.render('index', { instructors });
-      })
-      .catch(err => {
-        return res.send('ERROR!');
-      });
-  })
-  .post((req, res) => {
-    return Instructor.create(req.body).then(() => {
-      return res.redirect('/');
-    });
+  .get((req, res, next) =>
+    Instructor.find()
+      .then(instructors => res.render('index', { instructors }))
+      .catch(err => next(err))
+  )
+  .post((req, res, next) => {
+    const newInst = new Instructor(req.body);
+    return newInst
+      .save()
+      .then(() => res.redirect('/'))
+      .catch(err => next(err));
   });
 
 router.route('/new').get((req, res) => {
@@ -30,26 +28,26 @@ router.route('/new').get((req, res) => {
 
 router
   .route('/:id')
-  .get((req, res) => {
-    return Instructor.findById(req.params.id).then(instructor => {
-      return res.render('show', { instructor });
-    });
-  })
-  .patch((req, res) => {
-    return Instructor.findByIdAndUpdate(req.params.id, req.body).then(data => {
-      return res.redirect('/instructors');
-    });
-  })
-  .delete((req, res) => {
-    return Instructor.findByIdAndRemove(req.params.id).then(data => {
-      return res.redirect('/instructors');
-    });
-  });
+  .get((req, res, next) =>
+    Instructor.findById(req.params.id)
+      .then(instructor => res.render('show', { instructor }))
+      .catch(err => next(err))
+  )
+  .patch((req, res, next) =>
+    Instructor.findByIdAndUpdate(req.params.id, req.body)
+      .then(() => res.redirect('/instructors'))
+      .catch(err => next(err))
+  )
+  .delete((req, res, next) =>
+    Instructor.findByIdAndRemove(req.params.id)
+      .then(() => res.redirect('/instructors'))
+      .catch(err => next(err))
+  );
 
-router.get('/:id/edit', (req, res) => {
-  return Instructor.findById(req.params.id).then(instructor => {
-    return res.render('edit', { instructor });
-  });
-});
+router.get('/:id/edit', (req, res, next) =>
+  Instructor.findById(req.params.id)
+    .then(instructor => res.render('edit', { instructor }))
+    .catch(err => next(err))
+);
 
 module.exports = router;

@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
-mongoose.set('debug', true);
-mongoose.connect(
-  process.env.MONGODB_URI || 'mongodb://localhost/mongoose_intro',
-  {
-    useMongoClient: true
-  }
-);
 
 mongoose.Promise = Promise;
+mongoose.set('debug', true);
+mongoose
+  .connect('mongodb://localhost/mongoose_intro')
+  .then(() => {
+    console.log('Successfully connected to DB.');
+  })
+  .catch(err => {
+    console.error(`Error connecting to database: ${err.message}`);
+  });
 
-module.exports.Instructor = require('./instructor');
-module.exports.Todo = require('./todo');
+exports.Instructor = require('./instructor');
+exports.Todo = require('./todo');
