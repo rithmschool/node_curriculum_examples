@@ -1,26 +1,26 @@
-var express = require("express");
-var app = express();
-var methodOverride = require("method-override");
-var bodyParser = require("body-parser");
-var morgan = require("morgan");
-var fs = require("fs");
+// npm packages
+const express = require('express');
+const methodOverride = require('method-override');
+const bodyParser = require('body-parser');
+const morgan = require('morgan');
 
-app.set("view engine", "pug");
-app.use(express.static(__dirname + "/public"));
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(methodOverride("_method"));
-app.use(morgan("tiny"));
+// app imports
+const { instructorsRouter, todosRouter } = require('./routers');
 
-var instructorRoutes = require("./routes/instructors")
-var todoRoutes = require("./routes/todos")
+// global variables
+const app = express();
 
-app.use('/instructors', instructorRoutes)
-app.use('/instructors/:instructor_id/todos', todoRoutes)
+// app config
+app.set('view engine', 'pug');
+app.use(express.static(__dirname + '/public'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride('_method'));
+app.use(morgan('tiny'));
 
-app.get('/', function(req,res){
-    res.redirect('/instructors')
-});
+app.get('/', (req, res) => res.redirect('/instructors'));
+app.use('/instructors', instructorsRouter);
+app.use('/instructors/:instructorId/todos', todosRouter);
 
-app.listen(3000, function(){
-  console.log("Server is listening on port 3000");
+app.listen(3000, () => {
+  console.log('Server is listening on port 3000');
 });
