@@ -6,7 +6,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/user/:name', function(request, response) {
-  return response.send(`Hello ${req.params.name}`);
+  return response.send(`Hello ${request.params.name}`);
 });
 
 app.listen(3000, function() {

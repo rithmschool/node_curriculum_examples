@@ -9,6 +9,7 @@ const { instructorsRouter, todosRouter } = require('./routers');
 
 // global variables
 const app = express();
+const PORT = 3000;
 
 // app config
 app.set('view engine', 'pug');
@@ -21,6 +22,14 @@ app.get('/', (req, res) => res.redirect('/instructors'));
 app.use('/instructors', instructorsRouter);
 app.use('/instructors/:instructorId/todos', todosRouter);
 
-app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
+// global error handler
+app.use((err, req, res, next) =>
+  res.status(err.status || 500).render('error', {
+    message: err.message || 'Something went wrong!',
+    title: err.title || 'Internal Server Error'
+  })
+);
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
